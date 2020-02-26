@@ -1,0 +1,15 @@
+{
+  "name": "magnet-server",
+  "version": "1.0.0",
+  "description": "magnet add trackers",
+  "main": "src/app.js",
+  "author": "xmmwc@qq.com",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "magnet": "https://github.com/xmmwc/magnet.git"
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>magnet</title>
+</head>
+
+<body>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 800px;
+      margin: 20px auto;
+    }
+
+    .result {
+      width: 100%;
+      min-height: 30px;
+      box-sizing: border-box;
+      border: 1px solid #dfdfdf;
+      background-color: #f0f0f0;
+      margin-top: 15px;
+      word-break: break-all;
+      padding: 15px;
+    }
+
+    #magnet {
+      width: 100%;
+      height: 200px;
+      box-sizing: border-box;
+    }
+  </style>
+  <div class="container">
+    <div class="input">
+      <textarea name="magnet" id="magnet" cols="30" rows="10"></textarea>
+    </div>
+    <button id="send">添加trackers</button>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    var button = document.getElementById('send');
+    var textarea = document.getElementById('magnet');
+    var result = document.getElementById('result');
+
+    var getMagnet = function () {
+      var magnet = textarea.value
+      if (magnet) {
+        var postData = {
+          magnet: magnet
+        }
+        fetch('./magnet', {
+          method: 'POST',
+          body: JSON.stringify(postData),
+          headers: {
+            'content-type': 'application/json'
+          },
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+          if (data.code === 200) {
+            result.innerHTML = data.data
+          } else {
+            throw new Error(data.msg)
+          }
+        }).catch(err => {
+          alert(err.message)
+        })
+      }
+    }
+
+    button.addEventListener('click', function () {
+      getMagnet()
+    })
+  </script>
+</body>
+
+</html>
