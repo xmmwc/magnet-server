@@ -10,8 +10,6 @@ RUN npm install
 
 COPY src ./src/
 
-RUN yarn build;
-
 EXPOSE 12365 9090
 
 CMD [ "node" ,"src/app.js"]
