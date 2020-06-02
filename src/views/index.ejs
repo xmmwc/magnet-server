@@ -41,19 +41,35 @@
       height: 200px;
       box-sizing: border-box;
     }
+
+    #infoHash {
+      width: 80%;
+      height: 28px;
+      margin-bottom: 5px;
+    }
   </style>
   <div class="container">
     <div class="input">
-      <textarea name="magnet" id="magnet" cols="30" rows="10"></textarea>
+      <textarea name="magnet" id="magnet" cols="30" rows="10" placeholder="magnet-link"></textarea>
     </div>
-    <button id="send">添加trackers</button>
+    <button id="addTracker">添加trackers</button>
+  </div>
+  <div class="container">
+    <div class="input">
+      <input type="text" id="infoHash" placeholder="info-hash" />
+    </div>
+    <button id="buildMagnet">生成磁力链接</button>
+  </div>
+  <div class="container">
     <div class="result">
       <a href="" id="result" target="_blank"></a>
     </div>
   </div>
   <script>
-    var button = document.getElementById('send');
+    var addButton = document.getElementById('addTracker');
+    var buildButton = document.getElementById('buildMagnet')
     var textarea = document.getElementById('magnet');
+    var input = document.getElementById('infoHash')
     var result = document.getElementById('result');
 
     var getMagnet = function () {
@@ -83,8 +99,39 @@
       }
     }
 
-    button.addEventListener('click', function () {
+    var buildMagnet = function () {
+      var hash = input.value
+      if (hash) {
+        var postData = {
+          hash: hash
+        }
+        fetch('./hash', {
+          method: 'POST',
+          body: JSON.stringify(postData),
+          headers: {
+            'content-type': 'application/json'
+          },
+        }).then(res => {
+          return res.json()
+        }).then(data => {
+          if (data.code === 200) {
+            result.innerHTML = data.data
+            result.setAttribute('href', data.data)
+          } else {
+            throw new Error(data.msg)
+          }
+        }).catch(err => {
+          alert(err.message)
+        })
+      }
+    }
+
+    addButton.addEventListener('click', function () {
       getMagnet()
+    })
+
+    buildButton.addEventListener('click', function () {
+      buildMagnet()
     })
   </script>
 </body>

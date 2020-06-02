@@ -14,7 +14,22 @@ app.set('view engine', 'ejs')
 
 app.post('/magnet', (req, res, next) => {
   const magnetStr = req.body.magnet
-  magnet(magnetStr).then(magnetResult => {
+  magnet.getMagnet(magnetStr).then(magnetResult => {
+    res.json({
+      data: magnetResult,
+      code: 200
+    })
+  }).catch(err => {
+    res.json({
+      msg: err.message,
+      code: -1
+    })
+  })
+})
+
+app.post('/hash', (req, res, next) => {
+  const infoHash = req.body.hash
+  magnet.getMagnetByInfoHash(infoHash).then(magnetResult => {
     res.json({
       data: magnetResult,
       code: 200
