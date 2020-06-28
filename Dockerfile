@@ -4,11 +4,11 @@ ENV SERVER_PORT='9090'
 
 WORKDIR /app
 
-COPY package*.json .
+ADD package.json yarn.lock ./
 
-RUN npm install
+RUN yarn
 
-COPY src ./src/
+ADD src ./src/
 
 EXPOSE 12365 9090
 
